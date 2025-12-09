@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+
+    <!-- NuGet パッケージ情報 -->
+    <Version>0.1.0</Version>
+    <PackageId>Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev</PackageId>
+    <Authors>ateliers</Authors>
+    <Company>ateliers.dev</Company>
+    <Product>Ateliers AI MCP</Product>
+    <Description>Ateliers.dev-specific Docusaurus MCP tools implementation</Description>
+    <PackageTags>mcp;ai;tools;docusaurus;ateliers.dev</PackageTags>
+    <PackageProjectUrl>https://github.com/yuu-git/ateliers-ai-mcp-tools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yuu-git/ateliers-ai-mcp-tools</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <!-- Assembly情報 -->
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <InformationalVersion>0.1.0</InformationalVersion>
+
+    <!-- NuGet パッケージ設定 -->
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- XML ドキュメント生成 -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- README を NuGet パッケージに含める -->
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ateliers.Ai.Mcp.Tools.Docusaurus\Ateliers.Ai.Mcp.Tools.Docusaurus.csproj" />
+  </ItemGroup>
+
+</Project>
