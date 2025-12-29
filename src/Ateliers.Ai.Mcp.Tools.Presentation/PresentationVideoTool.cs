@@ -37,28 +37,27 @@ public class PresentationVideoTool
         - ナレーション文は **日本語（ひらがな・カタカナ・漢字）で記述してください**
         - 英語・アルファベット表記は音声品質が大きく低下します
 
-          BAD EXAMPLES:
-          - MCP
-          - VS Code
-          - GitHub
-          - AI Tool
-
-          GOOD EXAMPLES:
-          - エムシーピー
-          - ブイエスコード
-          - ギットハブ
-          - エーアイツール
+          EXAMPLES:
+          - MCP -> エムシーピー
+          - VS Code -> ブイエスコード
+          - GitHub -> ギットハブ
+          - AI Tool -> エーアイツール
 
         - 「・」「/」「|」「-」などの記号は、音声生成時に不自然な区切りになります
         - スペースも区切りとして解釈されるため、必要最小限にしてください
 
-          BAD:
-          - AI ・ MCP ・ Tool
-          - プレゼン  動画
+          EXAMPLES:
+          - AI ・ MCP ・ Tool -> エーアイエムシーピーツール
+          - プレゼン  動画 -> プレゼン動画
 
-          GOOD:
-          - エーアイエムシーピーツール
-          - プレゼン動画
+        MARKDOWN CONTENT RULES:
+        スライドのMarkdown内は **英語・アルファベット表記を使用できます**
+        音声生成には影響しません
+
+          OK EXAMPLES (Markdown):
+          - # MCP とは
+          - VS Code での開発
+          - GitHub 連携
 
         REQUIREMENTS:
         - VOICEVOX がインストールされていること
