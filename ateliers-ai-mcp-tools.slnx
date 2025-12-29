@@ -4,6 +4,7 @@
     <File Path=".gitignore" />
     <File Path="LICENSE" />
     <File Path="README.md" />
+    <File Path="scripts/copy-to-local-nuget.ps1" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev.csproj" Id="2ebc019e-66d0-4fb7-8828-87bd2a8b744b" />
