@@ -1,6 +1,8 @@
 using ModelContextProtocol.Server;
 using System.ComponentModel;
-using Ateliers.Ai.Mcp.Services.Git;
+using Ateliers.Ai.Mcp.Services;
+using Ateliers.Ai.Mcp.Tools;
+using Ateliers.Ai.Mcp;
 
 namespace Ateliers.Ai.McpServer.Tools;
 
@@ -8,12 +10,12 @@ namespace Ateliers.Ai.McpServer.Tools;
 /// Git操作ツール（明示的なGit操作）
 /// </summary>
 [McpServerToolType]
-public class GitTools
+public class GitTools : McpToolBase
 {
-    private readonly GitService _gitService;
+    private readonly IGitService _gitService;
 
-    public GitTools(
-        GitService gitService)
+    public GitTools(IMcpLogger mcpLogger, IGitService gitService)
+        : base(mcpLogger)
     {
         _gitService = gitService;
     }

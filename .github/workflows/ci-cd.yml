@@ -3,26 +3,44 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ master ]
-    tags: [ '**' ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ master ]
 
 env:
   DOTNET_VERSION: '10.0.x'
   CONFIGURATION: 'Release'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
 
 jobs:
   # ビルド & テスト
   build-and-test:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      checks: write  # test-reporter 用
+      pull-requests: write  # PR へのコメント用
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # GitVersion などで使用する場合
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
         run: dotnet restore
@@ -31,20 +49,61 @@ jobs:
         run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
 
       - name: Test
-        run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal --collect:"XPlat Code Coverage"
+        run: dotnet test --configuration ${{ env.CONFIGURATION }} --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: '**/TestResults/**'
+          path: |
+            **/TestResults/**/*.trx
+            **/TestResults/**/*.xml
+
+      - name: Publish test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Results
+          path: '**/TestResults/**/test-results.trx'
+          reporter: dotnet-trx
+          fail-on-error: true
+
+      - name: Upload coverage to Codecov (optional)
+        if: success()
+        uses: codecov/codecov-action@v4
+        with:
+          files: '**/TestResults/**/coverage.cobertura.xml'
+          fail_ci_if_error: false
 
   # NuGet パッケージ公開（Tagプッシュ時のみ）
   publish-nuget:
     needs: build-and-test
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # GitHub Releases 用
+      packages: write  # GitHub Packages 用（オプション）
+
+    strategy:
+      matrix:
+        project:
+          - name: Ateliers.Ai.Mcp.Tools
+            path: src/Ateliers.Ai.Mcp.Tools/Ateliers.Ai.Mcp.Tools.csproj
+          - name: Ateliers.Ai.Mcp.Tools.Docusaurus
+            path: src/Ateliers.Ai.Mcp.Tools.Docusaurus/Ateliers.Ai.Mcp.Tools.Docusaurus.csproj
+          - name: Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev
+            path: src/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev.csproj
+          - name: Ateliers.Ai.Mcp.Tools.Git
+            path: src/Ateliers.Ai.Mcp.Tools.Git/Ateliers.Ai.Mcp.Tools.Git.csproj
+          - name: Ateliers.Ai.Mcp.Tools.Notion
+            path: src/Ateliers.Ai.Mcp.Tools.Notion/Ateliers.Ai.Mcp.Tools.Notion.csproj
+          - name: Ateliers.Ai.Mcp.Tools.Presentation
+            path: src/Ateliers.Ai.Mcp.Tools.Presentation/Ateliers.Ai.Mcp.Tools.Presentation.csproj
+          - name: Ateliers.Ai.Mcp.Tools.Repository
+            path: src/Ateliers.Ai.Mcp.Tools.Repository/Ateliers.Ai.Mcp.Tools.Repository.csproj
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,20 +114,54 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ${{ matrix.project.path }}
 
       - name: Build
-        run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore
+        run: dotnet build ${{ matrix.project.path }} --configuration ${{ env.CONFIGURATION }} --no-restore
 
-      - name: Pack all projects
-        run: |
-          dotnet pack src/Ateliers.Ai.Mcp.Tools/Ateliers.Ai.Mcp.Tools.csproj --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
-          dotnet pack src/Ateliers.Ai.Mcp.Tools.Notion/Ateliers.Ai.Mcp.Tools.Notion.csproj --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
-          dotnet pack src/Ateliers.Ai.Mcp.Tools.Git/Ateliers.Ai.Mcp.Tools.Git.csproj --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
-          dotnet pack src/Ateliers.Ai.Mcp.Tools.Repository/Ateliers.Ai.Mcp.Tools.Repository.csproj --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
-          dotnet pack src/Ateliers.Ai.Mcp.Tools.Docusaurus/Ateliers.Ai.Mcp.Tools.Docusaurus.csproj --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
-          dotnet pack src/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev.csproj --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
-          dotnet pack src/Ateliers.Ai.Mcp.Tools.Presentation/Ateliers.Ai.Mcp.Tools.Presentation.csproj --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
+      - name: Pack
+        run: dotnet pack ${{ matrix.project.path }} --configuration ${{ env.CONFIGURATION }} --no-build --output ./packages
 
-      - name: Publish to nuget.org
+      - name: Publish to NuGet.org
         run: dotnet nuget push ./packages/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+
+      - name: Upload packages as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ matrix.project.name }}
+          path: ./packages/*.*nupkg
+
+  # GitHub Release 作成（すべてのパッケージ公開後）
+  create-release:
+    needs: publish-nuget
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all package artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./all-packages
+          pattern: packages-*
+
+      - name: Flatten packages directory
+        run: |
+          mkdir -p ./packages
+          find ./all-packages -name '*.nupkg' -exec cp {} ./packages/ \;
+          find ./all-packages -name '*.snupkg' -exec cp {} ./packages/ \;
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./packages/*.*nupkg
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,9 +1,9 @@
 using ModelContextProtocol.Server;
 using System.ComponentModel;
-using Ateliers.Ai.Mcp.Services.Git;
-using Ateliers.Ai.Mcp.Services.GitHub;
-using Ateliers.Ai.Mcp.Services.LocalFs;
+using Ateliers.Ai.Mcp.Services;
 using Microsoft.Extensions.Options;
+using Ateliers.Ai.Mcp;
+using Ateliers.Ai.Mcp.Tools;
 
 namespace Ateliers.Ai.McpServer.Tools;
 
@@ -12,16 +12,18 @@ namespace Ateliers.Ai.McpServer.Tools;
 /// NOTE: AutoPull/AutoPush機能は Phase 6以降で再検討予定
 /// </summary>
 [McpServerToolType]
-public class RepositoryTools
+public class RepositoryTools : McpToolBase
 {
-    private readonly GitHubService _gitHubService;
-    private readonly GitService _gitService;
-    private readonly LocalFileService _localFileService;
+    private readonly IGitHubService _gitHubService;
+    private readonly IGitService _gitService;
+    private readonly ILocalFileService _localFileService;
 
     public RepositoryTools(
-        GitHubService gitHubService,
-        LocalFileService localFileService,
-        GitService gitService)
+        IMcpLogger mcpLogger,
+        IGitHubService gitHubService,
+        ILocalFileService localFileService,
+        IGitService gitService)
+        : base(mcpLogger)
     {
         _gitHubService = gitHubService;
         _gitService = gitService;

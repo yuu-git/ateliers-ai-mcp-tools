@@ -1,7 +1,7 @@
 using ModelContextProtocol.Server;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
-using Ateliers.Ai.Mcp.Services.GitHub;
+using Ateliers.Ai.Mcp.Services;
 
 namespace Ateliers.Ai.Mcp.Tools.Docusaurus;
 
@@ -9,11 +9,12 @@ namespace Ateliers.Ai.Mcp.Tools.Docusaurus;
 /// Ateliers.dev 技術記事参照ツール
 /// </summary>
 [McpServerToolType]
-public class AteliersDevTools
+public class AteliersDevTools : McpToolBase
 {
-    private readonly GitHubService _gitHubService;
+    private readonly IGitHubService _gitHubService;
 
-    public AteliersDevTools(GitHubService gitHubService)
+    public AteliersDevTools(IMcpLogger mcpLogger, IGitHubService gitHubService)
+        : base(mcpLogger)
     {
         _gitHubService = gitHubService;
     }

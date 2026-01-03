@@ -6,12 +6,14 @@ using System.ComponentModel;
 namespace Ateliers.Ai.Mcp.Tools.Presentation;
 
 [McpServerToolType]
-public class PresentationVideoTool
+public class PresentationVideoTool : McpToolBase
 {
     private readonly IPresentationVideoGenerator _presentationVideoGenerator;
 
     public PresentationVideoTool(
+        IMcpLogger mcpLogger,
         IPresentationVideoGenerator presentationVideoGenerator)
+        : base(mcpLogger)
     {
         _presentationVideoGenerator = presentationVideoGenerator;
     }

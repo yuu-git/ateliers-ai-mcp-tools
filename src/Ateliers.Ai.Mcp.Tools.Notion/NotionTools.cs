@@ -1,4 +1,4 @@
-using Ateliers.Ai.Mcp.Services.Notion;
+using Ateliers.Ai.Mcp.Services;
 using ModelContextProtocol.Server;
 using System.ComponentModel;
 
@@ -8,16 +8,18 @@ namespace Ateliers.Ai.Mcp.Tools.Notion;
 /// Notion Tasks/Ideas/Reading List管理MCPツール
 /// </summary>
 [McpServerToolType]
-public class NotionTools
+public class NotionTools : McpToolBase
 {
-    private readonly NotionTasksService _notionTasksService;
-    private readonly NotionIdeasService _notionIdeasService;
-    private readonly NotionReadingListService _notionReadingListService;
+    private readonly INotionTasksService _notionTasksService;
+    private readonly INotionIdeasService _notionIdeasService;
+    private readonly INotionReadingListService _notionReadingListService;
 
     public NotionTools(
-        NotionTasksService notionTasksService, 
-        NotionIdeasService notionIdeasService,
-        NotionReadingListService notionReadingListService)
+        IMcpLogger mcpLogger,
+        INotionTasksService notionTasksService, 
+        INotionIdeasService notionIdeasService,
+        INotionReadingListService notionReadingListService)
+        : base(mcpLogger)
     {
         _notionTasksService = notionTasksService;
         _notionIdeasService = notionIdeasService;
