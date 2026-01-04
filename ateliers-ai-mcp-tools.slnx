@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path=".github/workflows/ci-cd.yml" />
     <File Path=".gitignore" />
+    <File Path=".submodules/ateliers-ai-mcp-projectbase/llms.txt" />
     <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="scripts/copy-to-local-nuget.ps1" />

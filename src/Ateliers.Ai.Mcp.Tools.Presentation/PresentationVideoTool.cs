@@ -34,9 +34,12 @@ public class PresentationVideoTool : McpToolBase
         GENERATION RULES:
         - スライドの数とナレーションの数は同じにしてください
         - マークダウンの見出し（# や ## など）で、スライドが分割されます
+        - 現在は 見出し1（#） と 見出し2（##） のみがスライド区切りとして認識されます
+        - 見出し3（###）以下は、スライド内のコンテンツとして扱われます
 
         IMPORTANT NARRATION RULES:
         - ナレーション文は **日本語（ひらがな・カタカナ・漢字）で記述してください**
+        - ナレーション音声が正しく生成されないケースがあるため、漢字も常用外は避けて下さい
         - 英語・アルファベット表記は音声品質が大きく低下します
 
           EXAMPLES:
@@ -53,8 +56,8 @@ public class PresentationVideoTool : McpToolBase
           - プレゼン  動画 -> プレゼン動画
 
         MARKDOWN CONTENT RULES:
-        スライドのMarkdown内は **英語・アルファベット表記を使用できます**
-        音声生成には影響しません
+        - スライドのMarkdown内は **英語・アルファベット表記を使用できます**
+        - 音声生成には影響しません
 
           OK EXAMPLES (Markdown):
           - # MCP とは
