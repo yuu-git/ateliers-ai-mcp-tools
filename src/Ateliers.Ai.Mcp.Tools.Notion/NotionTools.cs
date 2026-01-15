@@ -1,4 +1,4 @@
-using Ateliers.Ai.Mcp.Services;
+﻿using Ateliers.Ai.Mcp.Services;
 using ModelContextProtocol.Server;
 using System.ComponentModel;
 
@@ -13,6 +13,11 @@ public class NotionTools : McpToolBase
     private readonly INotionTasksService _notionTasksService;
     private readonly INotionIdeasService _notionIdeasService;
     private readonly INotionReadingListService _notionReadingListService;
+
+    /// <summary>
+    /// ツール名
+    /// </summary>
+    protected override string ToolName => nameof(NotionTools);
 
     public NotionTools(
         IMcpLogger mcpLogger,

@@ -10,6 +10,11 @@ public class PresentationVideoTool : McpToolBase
 {
     private readonly IPresentationVideoGenerator _presentationVideoGenerator;
 
+    /// <summary>
+    /// ツール名
+    /// </summary>
+    protected override string ToolName => nameof(PresentationVideoTool);
+
     public PresentationVideoTool(
         IMcpLogger mcpLogger,
         IPresentationVideoGenerator presentationVideoGenerator)

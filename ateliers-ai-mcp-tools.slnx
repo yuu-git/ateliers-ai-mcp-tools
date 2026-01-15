@@ -11,6 +11,7 @@
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev.csproj" Id="2ebc019e-66d0-4fb7-8828-87bd2a8b744b" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Docusaurus/Ateliers.Ai.Mcp.Tools.Docusaurus.csproj" Id="07a39b21-8716-4e24-801b-02e6284f4c63" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Git/Ateliers.Ai.Mcp.Tools.Git.csproj" Id="42cd9601-a853-443a-b580-a5b005002d8b" />
+    <Project Path="src/Ateliers.Ai.Mcp.Tools.McpLogAnalyzer/Ateliers.Ai.Mcp.Tools.McpLogAnalyzer.csproj" Id="9ee9efff-e3cf-4728-b827-e671e3db2a8b" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Notion/Ateliers.Ai.Mcp.Tools.Notion.csproj" Id="7d36d5dc-ca34-4c56-b037-4f77a339714c" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Presentation/Ateliers.Ai.Mcp.Tools.Presentation.csproj" Id="0c5f541d-2e27-4eac-b50c-82d6c3900e2b" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Repository/Ateliers.Ai.Mcp.Tools.Repository.csproj" Id="b752a6da-cefb-4d14-8a8d-c8ba3300783d" />
@@ -20,6 +21,7 @@
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev.UnitTests/Ateliers.Ai.Mcp.Tools.Docusaurus.AteliersDev.UnitTests.csproj" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Docusaurus.UnitTests/Ateliers.Ai.Mcp.Tools.Docusaurus.UnitTests.csproj" Id="c3c2685b-2cbe-4e08-a8bd-d6981f776158" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Git.UnitTests/Ateliers.Ai.Mcp.Tools.Git.UnitTests.csproj" Id="4d017899-3ee9-4fff-b9cb-1cad2ac97666" />
+    <Project Path="src/Ateliers.Ai.Mcp.Tools.McpLogAnalyzer.UnitTests/Ateliers.Ai.Mcp.Tools.McpLogAnalyzer.UnitTests.csproj" Id="d38a931a-9142-4c30-9de7-07dc29903200" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Notion.UnitTests/Ateliers.Ai.Mcp.Tools.Notion.UnitTests.csproj" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Presentation.UnitTests/Ateliers.Ai.Mcp.Tools.Presentation.UnitTests.csproj" Id="be9d1fde-1e53-48a9-b55e-bc3a0946f1cf" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Repository.UnitTests/Ateliers.Ai.Mcp.Tools.Repository.UnitTests.csproj" Id="d4064f93-32c0-42cc-834e-c0968f3be669" />

@@ -4,16 +4,15 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
 
     <!-- NuGet パッケージ情報 -->
     <Version>0.2.1-alpha.1</Version>
-    <PackageId>Ateliers.Ai.Mcp.Tools.Git</PackageId>
+    <PackageId>Ateliers.Ai.Mcp.Tools.McpLogAnalyzer</PackageId>
     <Authors>ateliers</Authors>
     <Company>ateliers.dev</Company>
     <Product>Ateliers AI MCP</Product>
-    <Description>Git操作（pull、commit、push、tag管理）のためのModel Context Protocol (MCP)ツールを提供するC#ライブラリ</Description>
-    <PackageTags>mcp;model-context-protocol;ai;tools;git;version-control;scm;commit;push;pull;tag</PackageTags>
+    <Description>MCPツールの実行ログを取得・解析するためのModel Context Protocol (MCP)ツールを提供するC#ライブラリ</Description>
+    <PackageTags>mcp;model-context-protocol;ai;tools;log;analyzer;debug;troubleshooting</PackageTags>
     <PackageProjectUrl>https://github.com/yuu-git/ateliers-ai-mcp-tools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/yuu-git/ateliers-ai-mcp-tools</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -36,7 +35,7 @@
 
   <!-- README を NuGet パッケージに含める -->
   <ItemGroup>
-    <None Include=".\README.md" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

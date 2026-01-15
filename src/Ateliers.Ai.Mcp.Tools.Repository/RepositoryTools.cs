@@ -1,4 +1,4 @@
-using ModelContextProtocol.Server;
+﻿using ModelContextProtocol.Server;
 using System.ComponentModel;
 using Ateliers.Ai.Mcp.Services;
 using Microsoft.Extensions.Options;
@@ -17,6 +17,11 @@ public class RepositoryTools : McpToolBase
     private readonly IGitHubService _gitHubService;
     private readonly IGitService _gitService;
     private readonly ILocalFileService _localFileService;
+
+    /// <summary>
+    /// ツール名
+    /// </summary>
+    protected override string ToolName => nameof(RepositoryTools);
 
     public RepositoryTools(
         IMcpLogger mcpLogger,

@@ -1,4 +1,4 @@
-using ModelContextProtocol.Server;
+﻿using ModelContextProtocol.Server;
 using System.ComponentModel;
 using Ateliers.Ai.Mcp.Services;
 using Ateliers.Ai.Mcp.Tools;
@@ -13,6 +13,11 @@ namespace Ateliers.Ai.McpServer.Tools;
 public class GitTools : McpToolBase
 {
     private readonly IGitService _gitService;
+
+    /// <summary>
+    /// ツール名
+    /// </summary>
+    protected override string ToolName => nameof(GitTools);
 
     public GitTools(IMcpLogger mcpLogger, IGitService gitService)
         : base(mcpLogger)

@@ -1,4 +1,4 @@
-using ModelContextProtocol.Server;
+﻿using ModelContextProtocol.Server;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Ateliers.Ai.Mcp.Services;
@@ -12,6 +12,11 @@ namespace Ateliers.Ai.Mcp.Tools.Docusaurus;
 public class AteliersDevTools : McpToolBase
 {
     private readonly IGitHubService _gitHubService;
+
+    /// <summary>
+    /// ツール名
+    /// </summary>
+    protected override string ToolName => nameof(AteliersDevTools);
 
     public AteliersDevTools(IMcpLogger mcpLogger, IGitHubService gitHubService)
         : base(mcpLogger)
