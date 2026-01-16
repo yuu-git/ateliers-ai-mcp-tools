@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ateliers.Ai.Mcp.Services.Ffmpeg" Version="0.3.1-alpha.1" />
+    <PackageReference Include="Ateliers.Ai.Mcp.Services.Marp" Version="0.3.1-alpha.1" />
+    <PackageReference Include="Ateliers.Ai.Mcp.Services.PresentationVideo" Version="0.3.1-alpha.1" />
+    <PackageReference Include="Ateliers.Ai.Mcp.Services.VoicePeak" Version="0.3.1-alpha.1" />
+    <PackageReference Include="Ateliers.Ai.Mcp.Services.Voicevox" Version="0.3.1-alpha.1" />
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ateliers.Ai.Mcp.Tools.Presentation\Ateliers.Ai.Mcp.Tools.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

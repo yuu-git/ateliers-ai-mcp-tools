@@ -2,6 +2,7 @@
 using Ateliers.Ai.Mcp.Services.GenericModels;
 using ModelContextProtocol.Server;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace Ateliers.Ai.Mcp.Tools.Presentation;
 
@@ -85,8 +86,15 @@ public class PresentationVideoTool : McpToolBase
         [Description("各スライドに対応するナレーション文配列（必須）")]
         string[] narrationTexts)
     {
+        var correlationId = Guid.NewGuid().ToString();
+        var startedAt = DateTime.UtcNow;
+
         try
         {
+            BeginToolExecution();
+
+            McpLogger?.Info($"[{correlationId}] プレゼンテーション動画生成開始");
+
             var request = new PresentationVideoRequest
             {
                 SourceMarkdown = sourceMarkdown,
@@ -95,23 +103,51 @@ public class PresentationVideoTool : McpToolBase
 
             var result = await _presentationVideoGenerator.GenerateAsync(request);
 
-            return $"""
-                SUCCESS: Presentation video generated successfully.
+            var completedAt = DateTime.UtcNow;
+            var duration = (completedAt - startedAt).TotalSeconds;
 
-                VideoPath:
-                {result.VideoPath}
-                """;
+            McpLogger?.Info($"[{correlationId}] プレゼンテーション動画生成完了: {result.VideoPath}");
+
+            var response = new PresentationVideoToolResponse
+            {
+                Success = true,
+                CorrelationId = correlationId,
+                VideoPath = result.VideoPath,
+                StartedAt = startedAt,
+                CompletedAt = completedAt,
+                DurationSeconds = duration
+            };
+
+            return JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
         }
         catch (Exception ex)
         {
-            // 想定外エラー
-            return $"""
-                ERROR:
-                Type: {ex.GetType().Name}
-                Message: {ex.Message}
-                StackTrace:
-                {ex.StackTrace}
-                """;
+            var completedAt = DateTime.UtcNow;
+            var duration = (completedAt - startedAt).TotalSeconds;
+
+            McpLogger?.Error($"[{correlationId}] プレゼンテーション動画生成失敗: {ex.GetType().Name} - {ex.Message}", ex);
+
+            var response = new PresentationVideoToolResponse
+            {
+                Success = false,
+                CorrelationId = correlationId,
+                ErrorType = ex.GetType().Name,
+                ErrorMessage = ex.Message,
+                ErrorStackTrace = ex.StackTrace,
+                StartedAt = startedAt,
+                CompletedAt = completedAt,
+                DurationSeconds = duration
+            };
+
+            return JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
         }
     }
 }

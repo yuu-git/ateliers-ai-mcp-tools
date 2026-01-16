@@ -23,6 +23,7 @@
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Git.UnitTests/Ateliers.Ai.Mcp.Tools.Git.UnitTests.csproj" Id="4d017899-3ee9-4fff-b9cb-1cad2ac97666" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.McpLogAnalyzer.UnitTests/Ateliers.Ai.Mcp.Tools.McpLogAnalyzer.UnitTests.csproj" Id="d38a931a-9142-4c30-9de7-07dc29903200" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Notion.UnitTests/Ateliers.Ai.Mcp.Tools.Notion.UnitTests.csproj" />
+    <Project Path="src/Ateliers.Ai.Mcp.Tools.Presentation.IntegrationTests/Ateliers.Ai.Mcp.Tools.Presentation.IntegrationTests.csproj" Id="bba0e576-5cef-4d5e-9ee7-297c074a3f0c" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Presentation.UnitTests/Ateliers.Ai.Mcp.Tools.Presentation.UnitTests.csproj" Id="be9d1fde-1e53-48a9-b55e-bc3a0946f1cf" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.Repository.UnitTests/Ateliers.Ai.Mcp.Tools.Repository.UnitTests.csproj" Id="d4064f93-32c0-42cc-834e-c0968f3be669" />
     <Project Path="src/Ateliers.Ai.Mcp.Tools.UnitTests/Ateliers.Ai.Mcp.Tools.UnitTests.csproj" Id="08466935-ca6a-4e14-b88f-2175bb108fe8" />
