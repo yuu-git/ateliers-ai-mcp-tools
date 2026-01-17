@@ -225,4 +225,83 @@ public sealed class PresentationVideoToolTests
         Assert.NotNull(response.VideoPath);
         Assert.True(File.Exists(response.VideoPath), $"動画ファイルが存在しません: {response.VideoPath}");
     }
+
+    [Fact(DisplayName = "プレゼンテーション動画生成ガイドが正しく取得できることを確認")]
+    [Trait("Category", "Integration")]
+    [Trait("Engine", "Voicevox")]
+    public void GetPresentationVideoGenerationGuide_ReturnsValidGuide()
+    {
+        // Arrange
+        var logger = new InMemoryMcpLogger(new McpLoggerOptions());
+        var options = new PresentationVideoServiceOptions
+        {
+            OutputRootDirectory = Path.Combine(Path.GetTempPath(), "presentations"),
+            ResourcePath = VoicevoxResourcePath,
+            VoiceModelNames = new[] { "0.vmm" },
+            VoicevoxOutputDirectoryName = "voicevox",
+            MarpExecutablePath = MarpExecutablePath,
+            MarpOutputDirectoryName = "marp",
+            FfmpegExecutablePath = FfmpegExecutablePath,
+            MediaOutputDirectoryName = "media"
+        };
+
+        var voicevoxService = new VoicevoxService(logger, options);
+        var marpService = new MarpService(logger, options);
+        var ffmpegService = new FfmpegService(logger, options);
+        var presentationVideoService = new PresentationVideoService(
+            logger,
+            options,
+            voicevoxService,
+            marpService,
+            ffmpegService);
+
+        var tool = new PresentationVideoTool(logger, presentationVideoService);
+
+        // Act
+        var guide = tool.GetPresentationVideoGenerationGuide();
+
+        // Assert
+        Assert.NotNull(guide);
+        Assert.NotEmpty(guide);
+        Assert.Contains("プレゼンテーション動画生成の流れ", guide);
+    }
+
+    [Fact(DisplayName = "プレゼンテーション動画生成ナレッジが正しく取得できることを確認")]
+    [Trait("Category", "Integration")]
+    [Trait("Engine", "Voicevox")]
+    public void GetPresentationVideoKnowledge_ReturnsValidKnowledge()
+    {
+        // Arrange
+        var logger = new InMemoryMcpLogger(new McpLoggerOptions());
+        var options = new PresentationVideoServiceOptions
+        {
+            OutputRootDirectory = Path.Combine(Path.GetTempPath(), "presentations"),
+            ResourcePath = VoicevoxResourcePath,
+            VoiceModelNames = new[] { "0.vmm" },
+            VoicevoxOutputDirectoryName = "voicevox",
+            MarpExecutablePath = MarpExecutablePath,
+            MarpOutputDirectoryName = "marp",
+            FfmpegExecutablePath = FfmpegExecutablePath,
+            MediaOutputDirectoryName = "media"
+        };
+
+        var voicevoxService = new VoicevoxService(logger, options);
+        var marpService = new MarpService(logger, options);
+        var ffmpegService = new FfmpegService(logger, options);
+        var presentationVideoService = new PresentationVideoService(
+            logger,
+            options,
+            voicevoxService,
+            marpService,
+            ffmpegService);
+
+        var tool = new PresentationVideoTool(logger, presentationVideoService);
+
+        // Act
+        var knowledge = tool.GetPresentationVideoKnowledge();
+
+        // Assert
+        Assert.NotNull(knowledge);
+        Assert.NotEmpty(knowledge);
+    }
 }

@@ -227,4 +227,116 @@ public sealed class PresentationVideoToolTests
         // Assert - ToolName is protected, but we can verify the instance is created correctly
         Assert.NotNull(tool);
     }
+
+    [Fact(DisplayName = "プレゼンテーション動画生成ガイドが正しく取得できることを確認")]
+    public void GetPresentationVideoGenerationGuide_ReturnsGuide()
+    {
+        // Arrange
+        var mockLogger = new Mock<IMcpLogger>();
+        var mockGenerator = new Mock<IPresentationVideoGenerator>();
+
+        var expectedGuide = """
+            # プレゼンテーション動画生成の流れ
+            
+            1. ソースMarkdownを用意します
+            2. スライド区切り見出し（# または ##）でスライドを分割します
+            """;
+
+        mockGenerator
+            .Setup(g => g.GetContentGenerationGuide())
+            .Returns(expectedGuide);
+
+        var tool = new PresentationVideoTool(mockLogger.Object, mockGenerator.Object);
+
+        // Act
+        var guide = tool.GetPresentationVideoGenerationGuide();
+
+        // Assert
+        Assert.NotNull(guide);
+        Assert.Equal(expectedGuide, guide);
+        
+        mockGenerator.Verify(g => g.GetContentGenerationGuide(), Times.Once);
+    }
+
+    [Fact(DisplayName = "プレゼンテーション動画生成ナレッジが正しく取得できることを確認")]
+    public void GetPresentationVideoKnowledge_ReturnsKnowledge()
+    {
+        // Arrange
+        var mockLogger = new Mock<IMcpLogger>();
+        var mockGenerator = new Mock<IPresentationVideoGenerator>();
+
+        var expectedKnowledge = new[]
+        {
+            "# 音声生成ナレッジ",
+            "利用可能なナレーター: ずんだもん、四国めたん",
+            "",
+            "---",
+            "",
+            "# スライド生成ナレッジ",
+            "デフォルトテーマ: default"
+        };
+
+        mockGenerator
+            .Setup(g => g.GetServiceKnowledgeContents())
+            .Returns(expectedKnowledge);
+
+        var tool = new PresentationVideoTool(mockLogger.Object, mockGenerator.Object);
+
+        // Act
+        var knowledge = tool.GetPresentationVideoKnowledge();
+
+        // Assert
+        Assert.NotNull(knowledge);
+        Assert.Contains("音声生成ナレッジ", knowledge);
+        Assert.Contains("スライド生成ナレッジ", knowledge);
+        Assert.Contains("ずんだもん", knowledge);
+        
+        mockGenerator.Verify(g => g.GetServiceKnowledgeContents(), Times.Once);
+    }
+
+    [Fact(DisplayName = "ガイド取得時に例外が発生した場合にエラーメッセージが返されることを確認")]
+    public void GetPresentationVideoGenerationGuide_WhenExceptionThrown_ReturnsErrorMessage()
+    {
+        // Arrange
+        var mockLogger = new Mock<IMcpLogger>();
+        var mockGenerator = new Mock<IPresentationVideoGenerator>();
+
+        mockGenerator
+            .Setup(g => g.GetContentGenerationGuide())
+            .Throws(new InvalidOperationException("Guide not available"));
+
+        var tool = new PresentationVideoTool(mockLogger.Object, mockGenerator.Object);
+
+        // Act
+        var guide = tool.GetPresentationVideoGenerationGuide();
+
+        // Assert
+        Assert.NotNull(guide);
+        Assert.Contains("ERROR", guide);
+        Assert.Contains("InvalidOperationException", guide);
+        Assert.Contains("Guide not available", guide);
+    }
+
+    [Fact(DisplayName = "ナレッジ取得時に例外が発生した場合にエラーメッセージが返されることを確認")]
+    public void GetPresentationVideoKnowledge_WhenExceptionThrown_ReturnsErrorMessage()
+    {
+        // Arrange
+        var mockLogger = new Mock<IMcpLogger>();
+        var mockGenerator = new Mock<IPresentationVideoGenerator>();
+
+        mockGenerator
+            .Setup(g => g.GetServiceKnowledgeContents())
+            .Throws(new InvalidOperationException("Knowledge not available"));
+
+        var tool = new PresentationVideoTool(mockLogger.Object, mockGenerator.Object);
+
+        // Act
+        var knowledge = tool.GetPresentationVideoKnowledge();
+
+        // Assert
+        Assert.NotNull(knowledge);
+        Assert.Contains("ERROR", knowledge);
+        Assert.Contains("InvalidOperationException", knowledge);
+        Assert.Contains("Knowledge not available", knowledge);
+    }
 }
